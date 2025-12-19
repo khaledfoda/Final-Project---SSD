@@ -1,0 +1,7 @@
+rules:
+  - id: insecure-redirect-direct
+    pattern: |
+      res.redirect($USER_INPUT)
+    message: "Insecure Redirect - redirect to user-controlled URL"
+    severity: MEDIUM
+    languages: [javascript]

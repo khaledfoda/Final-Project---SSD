@@ -1,0 +1,9 @@
+rules:
+  - id: mass-assignment-vulnerability
+    pattern: "db.user.update(req.body, {where: {id : userId}})"
+    message: "Mass Assignment Vulnerability - accepts any request body fields"
+    severity: CRITICAL
+    languages: [javascript]
+    metadata:
+      owasp: "A01: Broken Access Control"
+      vulnerability: "Mass Assignment -> Privilege Escalation"

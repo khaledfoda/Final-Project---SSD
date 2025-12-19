@@ -1,0 +1,39 @@
+rules:
+  - id: nodejs-sql-injection-string-concat
+    languages:
+      - javascript
+    severity: ERROR
+    message: >
+      Possible SQL Injection detected.
+      User-controlled input is directly concatenated into an SQL query.
+      Use parameterized queries or ORM query methods instead.
+    metadata:
+      category: security
+      technology:
+        - nodejs
+        - express
+        - sequelize
+      cwe: "CWE-89: SQL Injection"
+      owasp: "A03:2021 - Injection"
+      confidence: HIGH
+    patterns:
+      - pattern-either:
+          # SQL query built with string concatenation
+          - pattern: |
+              $SQL = "SELECT" + $X
+          - pattern: |
+              $SQL = $X + "FROM"
+          - pattern: |
+              $SQL = "SELECT" + ... + $INPUT + ...
+          - pattern: |
+              $SQL = ... + $INPUT + ...
+      - pattern-inside: |
+          app.get(..., (req, res) => {
+            ...
+          }
+      - metavariable-pattern:
+          metavariable: $INPUT
+          pattern-either:
+            - pattern: req.params.$ANY
+            - pattern: req.query.$ANY
+            - pattern: req.body.$ANY

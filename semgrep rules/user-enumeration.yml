@@ -1,0 +1,14 @@
+rules:
+  - id: user-enumeration-differential-errors
+    message: User Enumeration via differential login error messages
+    severity: WARNING
+    languages:
+      - javascript
+    metadata:
+      owasp: A07:2021-Identification and Authentication Failures
+      confidence: high
+    patterns:
+      - pattern-either:
+          - pattern: res.status(404).send(...)
+          - pattern: res.status(401).send(...)
+
